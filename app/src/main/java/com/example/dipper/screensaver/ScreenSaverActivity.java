@@ -36,6 +36,7 @@ public class ScreenSaverActivity extends Activity {
         pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP |
                 PowerManager.SCREEN_DIM_WAKE_LOCK, TAG);
+        wl.acquire();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
@@ -62,7 +63,7 @@ public class ScreenSaverActivity extends Activity {
 
     @Override
     protected void onResume() {
-        wl.acquire();
+        //wl.acquire();
         super.onResume();
     }
 
