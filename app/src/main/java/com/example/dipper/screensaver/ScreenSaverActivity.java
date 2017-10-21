@@ -36,7 +36,8 @@ public class ScreenSaverActivity extends Activity {
         pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP |
                 PowerManager.SCREEN_DIM_WAKE_LOCK, TAG);
-
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         initScreenSaver();
     }
@@ -55,7 +56,6 @@ public class ScreenSaverActivity extends Activity {
         @Override
         public void run() {
             handler.postDelayed(this, time);
-            //wl.acquire();
             mHandler.sendEmptyMessage(MyHandler.CHANG_IMAGE);
         }
     };
@@ -68,7 +68,13 @@ public class ScreenSaverActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        wl.release();
+        if (wl != null) {
+            try {
+                wl.release();
+            } catch (Throwable th) {
+                // ignoring this exception, probably wakeLock was already released
+            }
+        }
         super.onDestroy();
     }
 }
