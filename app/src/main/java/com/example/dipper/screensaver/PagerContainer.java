@@ -26,7 +26,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 /**
- * Created by dipper on 2016/10/30.
+ * Created by Dipper on 2016/10/30.
  */
 
 public class PagerContainer extends FrameLayout implements OnPageChangeListener {

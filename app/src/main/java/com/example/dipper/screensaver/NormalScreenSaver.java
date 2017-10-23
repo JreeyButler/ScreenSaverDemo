@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 /**
- * Created by dipper on 2017/10/20.
+ * Created by yan.liangliang on 2017/10/20.
  */
 
 public class NormalScreenSaver extends Service {
