@@ -5,7 +5,7 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 
 /**
- * Created by yan.liangliang on 2017/10/20.
+ * Created by dipper on 2017/10/20.
  */
 
 public class MyHandler extends Handler {

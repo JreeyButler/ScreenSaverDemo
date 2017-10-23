@@ -1,7 +1,12 @@
 package com.example.dipper.screensaver;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.service.dreams.DreamService;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 
 /**
@@ -24,6 +29,7 @@ public class ShowScreenSaver extends DreamService {
         setInteractive(false);
         setFullscreen(true);
         setContentView(R.layout.activity_main);
+        Utils.makeImagesDir();//创建图片文件夹
         initScreenSaver();
     }
 
@@ -44,4 +50,11 @@ public class ShowScreenSaver extends DreamService {
             mHandler.sendEmptyMessage(MyHandler.CHANG_IMAGE);
         }
     };
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.gc();
+    }
+
 }
