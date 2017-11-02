@@ -1,12 +1,7 @@
 package com.example.dipper.screensaver;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Handler;
 import android.service.dreams.DreamService;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 
 /**
@@ -14,7 +9,7 @@ import android.support.v4.view.ViewPager;
  */
 
 public class ShowScreenSaver extends DreamService {
-    public static final long time = 60000;
+    public static final long time = 5000;
     public static final String TAG = "ShowScreenSaver";
 
     private PagerContainer pagerContainer;
@@ -39,7 +34,6 @@ public class ShowScreenSaver extends DreamService {
         viewPager.setAdapter(new MyPagerAdapter(this));
         mHandler = new MyHandler(viewPager);
         handler = new Handler();
-
         handler.postDelayed(task, time);
     }
 
@@ -54,7 +48,6 @@ public class ShowScreenSaver extends DreamService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        System.gc();
     }
 
 }

@@ -14,7 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.io.InputStream;
@@ -29,26 +33,23 @@ public class MyPagerAdapter extends PagerAdapter implements View.OnClickListener
     private ImageView imageView;
     private Context context;
     private PowerManager.WakeLock wl;
-    private List<Bitmap> demoBitmaps;
+    private int[] images;
+    private Animation animation;
 
     public MyPagerAdapter(Context context, PowerManager.WakeLock wl) {
         this.wl = wl;
         this.context = context;
-        System.gc();    //建议系统进行内存回收、防止内存溢出
-        demoBitmaps = new ArrayList<>();
         getDemoImages();
     }
 
     public MyPagerAdapter(Context context) {
         this.context = context;
-        demoBitmaps = new ArrayList<>();
-        System.gc();
         getDemoImages();
     }
 
     @Override
     public int getCount() {
-        if (demoBitmaps == null)
+        if (images == null)
             return 0;
         return 100000;
     }
@@ -60,9 +61,9 @@ public class MyPagerAdapter extends PagerAdapter implements View.OnClickListener
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        position %= demoBitmaps.size();
+        position %= images.length;
         if (position < 0) {
-            position = demoBitmaps.size() + position;
+            position = images.length + position;
         }
 
         View view1 = LayoutInflater.from(context).inflate(R.layout.image_item, null);
@@ -72,8 +73,10 @@ public class MyPagerAdapter extends PagerAdapter implements View.OnClickListener
             parent.removeView(view1);
         }
         imageView = view1.findViewById(R.id.screen_images);
-        imageView.setImageBitmap(demoBitmaps.get(position));
+        animation = AnimationUtils.loadAnimation(context, R.anim.scale);
+        imageView.setAnimation(animation);
         imageView.setOnClickListener(this);
+        Glide.with(context).load(images[position]).into(imageView);
         container.addView(view1);
         return view1;
     }
@@ -90,10 +93,6 @@ public class MyPagerAdapter extends PagerAdapter implements View.OnClickListener
                 ((Activity) context).finish();
                 if (wl != null)
                     wl.release();
-                if (demoBitmaps != null) {
-                    Utils.recycleAllDemoImageBitmap(demoBitmaps);
-                    demoBitmaps = null;
-                }
                 break;
             default:
                 break;
@@ -112,19 +111,10 @@ public class MyPagerAdapter extends PagerAdapter implements View.OnClickListener
      * 获取默认屏保壁纸
      */
     private void getDefaultDemoImages() {
-        Resources res = context.getResources();
-        int[] images = new int[]{R.drawable.slideshow_1, R.drawable.slideshow_2, R.drawable.slideshow_3,
+        images = new int[]{R.drawable.slideshow_1, R.drawable.slideshow_2, R.drawable.slideshow_3,
                 R.drawable.slideshow_4, R.drawable.slideshow_5, R.drawable.slideshow_6,
                 R.drawable.slideshow_7, R.drawable.slideshow_8, R.drawable.slideshow_9,
                 R.drawable.slideshow_10};
-        for (int i = 0; i < images.length; i++) {
-            BitmapFactory.Options opt = new BitmapFactory.Options();
-            opt.inPreferredConfig = Bitmap.Config.RGB_565;
-            opt.inPurgeable = true;
-            opt.inInputShareable = true;
-            InputStream is = res.openRawResource(images[i]);
-            demoBitmaps.add(BitmapFactory.decodeStream(is, null, opt));
-        }
     }
 
     /**
@@ -133,7 +123,7 @@ public class MyPagerAdapter extends PagerAdapter implements View.OnClickListener
     private void getExternalDemoImages() {
         File[] images = new File(Utils.IMAGES_FILES_PATH).listFiles();
         for (int i = 0; i < images.length; i++) {
-            demoBitmaps.add(BitmapFactory.decodeFile(Utils.IMAGES_FILES_PATH + images[i].getName()));
+            //demoBitmaps.add(BitmapFactory.decodeFile(Utils.IMAGES_FILES_PATH + images[i].getName()));
         }
     }
 }

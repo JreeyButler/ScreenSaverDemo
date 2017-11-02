@@ -1,18 +1,11 @@
 package com.example.dipper.screensaver;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.KeyguardManager;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.WindowManager;
 
@@ -23,7 +16,7 @@ import android.view.WindowManager;
 
 public class ScreenSaverActivity extends Activity {
     public static final String TAG = "ScreenSaverActivity";
-    public static final long time = 60000;
+    public static final long time = 5000;
     private static final int REQUEST_CODE = 1;
     private PagerContainer pagerContainer;
     private ViewPager viewPager;
